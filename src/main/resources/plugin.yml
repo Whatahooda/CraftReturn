@@ -1,0 +1,4 @@
+name: ItemReturnOnCraft
+version: '${project.version}'
+main: me.whatahooda.itemreturnoncraft.ItemReturnOnCraft
+api-version: '1.20'
