@@ -12,105 +12,105 @@ import java.util.HashMap;
 
 public class RecipeReturnsBottle implements  Listener {
 
+    private final HashMap<Material, Material> RETURNED_MATERIALS = new HashMap<>();
+    public RecipeReturnsBottle() {
+        RETURNED_MATERIALS.put(Material.POTION, Material.GLASS_BOTTLE);
+        RETURNED_MATERIALS.put(Material.SPLASH_POTION, Material.GLASS_BOTTLE);
+        RETURNED_MATERIALS.put(Material.LINGERING_POTION, Material.GLASS_BOTTLE);
+    }
+
     // Forces player to drop items
-    private void PlayerDropItemStack(HumanEntity _player, ItemStack _stack_to_drop) {
-        ItemStack old_hand = _player.getInventory().getItemInMainHand();
+    private void playerDropItemStack(HumanEntity _player, ItemStack _stackToDrop) {
+        ItemStack oldHand = _player.getInventory().getItemInMainHand();
         // Seems a bit sketchy to delete and replace the main hand item
         // I couldn't find another way to perfectly imitate "over crafting" or "drop crafting"
-        _player.getInventory().setItemInMainHand(_stack_to_drop);
+        _player.getInventory().setItemInMainHand(_stackToDrop);
         _player.dropItem(true);
-        _player.getInventory().setItemInMainHand(old_hand);
+        _player.getInventory().setItemInMainHand(oldHand);
     }
 
     @EventHandler
-    public void OnItemCraft(CraftItemEvent craft_event) {
-
-        // Do I have to initialize this everytime the event is called? Idk how to do it otherwise yet TODO Get java knowledge
-        HashMap<Material, Material> returned_materials = new HashMap<>();
-        returned_materials.put(Material.POTION, Material.GLASS_BOTTLE);
-        returned_materials.put(Material.SPLASH_POTION, Material.GLASS_BOTTLE);
-        returned_materials.put(Material.LINGERING_POTION, Material.GLASS_BOTTLE);
-
-        int result_stack_amount = craft_event.getRecipe().getResult().getAmount();
+    public void OnItemCraft(CraftItemEvent _craftEvent) {
+        int resultStackAmount = _craftEvent.getRecipe().getResult().getAmount();
 
         // Return if this is not a recipe we care about
-        boolean skip_recipe = true;
+        boolean skipRecipe = true;
         // We will use this array later
-        ItemStack[] crafting_inventory_matrix = craft_event.getInventory().getMatrix();
-        for (final ItemStack itemStack : crafting_inventory_matrix) {
-            if (itemStack != null && returned_materials.containsKey(itemStack.getType())) skip_recipe = false;
+        ItemStack[] craftingInventoryMatrix = _craftEvent.getInventory().getMatrix();
+        for (final ItemStack _itemStack : craftingInventoryMatrix) {
+            if (_itemStack != null && RETURNED_MATERIALS.containsKey(_itemStack.getType())) skipRecipe = false;
         }
-        if (skip_recipe) return;
+        if (skipRecipe) return;
 
         // Used to track items that couldn't fit in player inventory on "shift craft"
         // Using remainder may be redundant? In testing, it seemed the result stack count was changed by .addItem()
         HashMap<Integer, ItemStack> remainder = new HashMap<>();
 
-        boolean is_click_craft = craft_event.isLeftClick() || craft_event.isRightClick();
-        boolean is_shift_craft = craft_event.isShiftClick();
+        boolean isClickCraft = _craftEvent.isLeftClick() || _craftEvent.isRightClick();
+        boolean isShiftCraft = _craftEvent.isShiftClick();
 
         // On shift click make sure there is room in the inventory
-        if (is_shift_craft) {
-            ItemStack result = craft_event.getRecipe().getResult();
+        if (isShiftCraft) {
+            ItemStack result = _craftEvent.getRecipe().getResult();
             // Attempt to give the player the crafting result
-            remainder = craft_event.getWhoClicked().getInventory().addItem(result);
+            remainder = _craftEvent.getWhoClicked().getInventory().addItem(result);
 
             // If there was no room to add items to the player inventory, cancel
-            if (!remainder.isEmpty() && remainder.get(0).getAmount() == result_stack_amount) {
-                craft_event.setResult(Event.Result.DENY);
+            if (!remainder.isEmpty() && remainder.get(0).getAmount() == resultStackAmount) {
+                _craftEvent.setResult(Event.Result.DENY);
                 return;
             }
         }
         // On normal click make sure we can add to cursor stack
-        else if (is_click_craft) {
-            ItemStack cursor_stack = craft_event.getWhoClicked().getItemOnCursor();
-            ItemStack result_stack = craft_event.getRecipe().getResult();
+        else if (isClickCraft) {
+            ItemStack cursorStack = _craftEvent.getWhoClicked().getItemOnCursor();
+            ItemStack resultStack = _craftEvent.getRecipe().getResult();
             // Don't craft if the cursor is not holding the right material, or is too full
-            if (cursor_stack.getType() != Material.AIR && (cursor_stack.getType() != result_stack.getType() || cursor_stack.getAmount() + result_stack.getAmount() > cursor_stack.getMaxStackSize())) {
-                craft_event.setResult(Event.Result.DENY);
+            if (cursorStack.getType() != Material.AIR && (cursorStack.getType() != resultStack.getType() || cursorStack.getAmount() + resultStack.getAmount() > cursorStack.getMaxStackSize())) {
+                _craftEvent.setResult(Event.Result.DENY);
                 return;
             }
         }
 
 
         // Handle each item in the crafting inventory
-        for (ItemStack stack : crafting_inventory_matrix) {
-            if (stack == null) continue;
+        for (ItemStack _stack : craftingInventoryMatrix) {
+            if (_stack == null) continue;
 
             // Convert items we care about into their returned items
-            if (returned_materials.containsKey(stack.getType())) {
-                stack.setType(returned_materials.get(stack.getType()));
+            if (RETURNED_MATERIALS.containsKey(_stack.getType())) {
+                _stack.setType(RETURNED_MATERIALS.get(_stack.getType()));
                 continue;
             }
 
             // Otherwise properly use up materials
-            int new_amount = stack.getAmount() - 1;
-            if (new_amount > 0) stack.setAmount(new_amount);
-            else stack.setType(Material.AIR);
+            int new_amount = _stack.getAmount() - 1;
+            if (new_amount > 0) _stack.setAmount(new_amount);
+            else _stack.setType(Material.AIR);
         }
 
         // Update the crafting inventory with returned items and updated item stacks
-        craft_event.getInventory().setMatrix(crafting_inventory_matrix);
+        _craftEvent.getInventory().setMatrix(craftingInventoryMatrix);
 
 
         // If we tried to shift click craft and there was a remainder, drop the items on the ground
-        if(is_shift_craft) {
-            if (!remainder.isEmpty()) PlayerDropItemStack(craft_event.getWhoClicked(), remainder.get(0));
+        if(isShiftCraft) {
+            if (!remainder.isEmpty()) playerDropItemStack(_craftEvent.getWhoClicked(), remainder.get(0));
             return;
         }
         // Add result stack to cursor on right or left click (must be done after .setMatrix())
-        else if (is_click_craft) {
+        else if (isClickCraft) {
             // Combine items on cursor with result items
-            ItemStack cursor_stack = craft_event.getWhoClicked().getItemOnCursor();
-            ItemStack result_stack = craft_event.getRecipe().getResult();
-            if (cursor_stack.getType() == result_stack.getType()) {
-                craft_event.getWhoClicked().setItemOnCursor(new ItemStack (result_stack.getType(), result_stack.getAmount() + cursor_stack.getAmount()));
+            ItemStack cursorStack = _craftEvent.getWhoClicked().getItemOnCursor();
+            ItemStack resultStack = _craftEvent.getRecipe().getResult();
+            if (cursorStack.getType() == resultStack.getType()) {
+                _craftEvent.getWhoClicked().setItemOnCursor(new ItemStack (resultStack.getType(), resultStack.getAmount() + cursorStack.getAmount()));
             }
-            else craft_event.getWhoClicked().setItemOnCursor(result_stack);
+            else _craftEvent.getWhoClicked().setItemOnCursor(resultStack);
             return;
         }
 
         // Drop crafting/event wasn't initiated with any click
-        PlayerDropItemStack(craft_event.getWhoClicked(), craft_event.getRecipe().getResult());
+        playerDropItemStack(_craftEvent.getWhoClicked(), _craftEvent.getRecipe().getResult());
     }
 }
