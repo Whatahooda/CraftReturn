@@ -3,7 +3,7 @@ A Minecraft plugin which allows you to add returnable items when crafting. This 
 This plugin replicates the properties of filled buckets in crafting recipes. Such as cake, the milk bucket is emptied and returned to the player.
 
 ## Commands
-### /addRecipe recipeType recipeName\n
+### /addRecipe recipeType recipeName
 Adds a new item that is returned on craft. Uses the items in your main-hand(craft-item) and off-hand(return-item)
 
 ### /removeRecipe recipeType recipeName confirm
