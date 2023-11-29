@@ -5,4 +5,6 @@ This plugin replicates the properties of filled buckets in crafting recipes. Suc
 The current version 1.0.0 does not work properly if you are to enable potion stacking. The plugin will not work properly when trying to craft with a stack potion.
 
 
-TODO: You will be able to edit a config file and add items that return other items to the crafting interface after a craft.
+Planned Features
+You will be able to edit a config file and add items that return other items to the crafting interface after a craft.
+Make the plugin work with stackable items.
