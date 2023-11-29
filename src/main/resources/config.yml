@@ -1,0 +1,39 @@
+#     ----- CraftReturn Config -----
+#
+#
+
+# Don't change these configs unless you know what you're doing
+# Instead use the /addRecipe command while holding an item in your main-hand and off-hand.
+returns-workbench:
+  general:
+    potion-to-bottle:
+      craft-item:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3465
+        type: POTION
+      return-item:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3465
+        type: GLASS_BOTTLE
+      addedBy: Default
+    splash-potion-to-bottle:
+      craft-item:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3465
+        type: SPLASH_POTION
+      return-item:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3465
+        type: GLASS_BOTTLE
+      addedBy: Default
+    lingering-potion-to-bottle:
+      craft-item:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3465
+        type: LINGERING_POTION
+      return-item:
+        ==: org.bukkit.inventory.ItemStack
+        v: 3465
+        type: GLASS_BOTTLE
+      addedBy: Default
+  nbt:
