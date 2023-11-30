@@ -9,8 +9,8 @@ import java.util.List;
 
 public class TabCompleteAddRecipe implements TabCompleter {
     @Override
-    public List<String> onTabComplete(CommandSender _sender, Command _command, String _label, String[] _args) {
-        if (_args.length == 1) return ConfigManager.SUB_COMMANDS_RECIPE_TYPE;
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 1) return ConfigManager.SUB_COMMANDS_RECIPE_TYPE;
         return null;
     }
 }

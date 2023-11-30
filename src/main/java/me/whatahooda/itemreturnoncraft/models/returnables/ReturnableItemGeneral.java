@@ -6,14 +6,14 @@ public class ReturnableItemGeneral implements ReturnableItem{
     private final ItemStack craftItem;
     private final ItemStack returnItem;
 
-    public ReturnableItemGeneral(ItemStack _newCraftItem, ItemStack _newReturnItem) {
-        this.craftItem = _newCraftItem;
-        this.returnItem = _newReturnItem;
+    public ReturnableItemGeneral(ItemStack newCraftItem, ItemStack newReturnItem) {
+        this.craftItem = newCraftItem;
+        this.returnItem = newReturnItem;
     }
 
     @Override
-    public boolean isItemReturnable(ItemStack _itemToCheck) {
-        return this.craftItem.getType() == _itemToCheck.getType();
+    public boolean isItemReturnable(ItemStack itemToCheck) {
+        return this.craftItem.getType() == itemToCheck.getType();
     }
 
     @Override
@@ -25,9 +25,9 @@ public class ReturnableItemGeneral implements ReturnableItem{
     }
 
     @Override
-    public void setItem(ItemStack _itemToChange, ItemStack _itemFrom) {
-        _itemToChange.setType(_itemFrom.getType());
-        _itemToChange.setData(_itemFrom.getData());
-        _itemToChange.setItemMeta(_itemFrom.getItemMeta());
+    public void setItem(ItemStack itemToChange, ItemStack itemFrom) {
+        itemToChange.setType(itemFrom.getType());
+        itemToChange.setData(itemFrom.getData());
+        itemToChange.setItemMeta(itemFrom.getItemMeta());
     }
 }

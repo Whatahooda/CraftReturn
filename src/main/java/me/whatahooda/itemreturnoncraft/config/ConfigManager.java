@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class ConfigManager {
 
-    private static ConfigManager managerInstance;
+    private static ConfigManager managerInstace;
     private static final FileConfiguration CONFIG = ItemReturnOnCraft.getMain().getConfig();
 
     public static final String CONFIG_SECTION_WORKBENCH = "returns-workbench";
@@ -24,29 +24,29 @@ public class ConfigManager {
 
 
     public static ConfigManager getManager() {
-        if (managerInstance == null) {
-            managerInstance = new ConfigManager();
+        if (managerInstace == null) {
+            managerInstace = new ConfigManager();
         }
-        return managerInstance;
+        return managerInstace;
     }
 
-    public void addRecipeToConfig(String _recipeType, String _sectionName, ItemStack _craftItem, ItemStack _returnItem, String _whoAdded) {
+    public void addRecipeToConfig(String recipeType, String sectionName, ItemStack craftItem, ItemStack returnItem, String whoAdded) {
         LinkedHashMap<String, ItemStack> pathValueMap = new LinkedHashMap<>();
-        pathValueMap.put(CONFIG_SECTION_CRAFT_ITEM, _craftItem);
-        pathValueMap.put(CONFIG_SECTION_RETURN_ITEM, _returnItem);
+        pathValueMap.put(CONFIG_SECTION_CRAFT_ITEM, craftItem);
+        pathValueMap.put(CONFIG_SECTION_RETURN_ITEM, returnItem);
 
-        ConfigurationSection _configSection = CONFIG.getConfigurationSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_GENERAL);
-        if (_configSection == null) _configSection = CONFIG.createSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_GENERAL);
-        if (_recipeType.equals("general")) {
-            ReturnableItemManager.getManager().registerGeneralReturnable(_sectionName, _craftItem, _returnItem);
+        ConfigurationSection configSection = CONFIG.getConfigurationSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_GENERAL);
+        if (configSection == null) configSection = CONFIG.createSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_GENERAL);
+        if (recipeType.equals("general")) {
+            ReturnableItemManager.getManager().registerGeneralReturnable(sectionName, craftItem, returnItem);
         }
-        if (_recipeType.equals("nbt")) {
-            _configSection = CONFIG.getConfigurationSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_NBT);
-            if (_configSection == null) _configSection = CONFIG.createSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_NBT);
-            ReturnableItemManager.getManager().registerNBTReturnable(_sectionName, _craftItem, _returnItem);
+        if (recipeType.equals("nbt")) {
+            configSection = CONFIG.getConfigurationSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_NBT);
+            if (configSection == null) configSection = CONFIG.createSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_NBT);
+            ReturnableItemManager.getManager().registerNBTReturnable(sectionName, craftItem, returnItem);
         }
 
-        _configSection.createSection(_sectionName, pathValueMap).set("addedBy", _whoAdded);
+        configSection.createSection(sectionName, pathValueMap).set("addedBy", whoAdded);
         ItemReturnOnCraft.getMain().saveConfig();
     }
 

@@ -1,18 +1,16 @@
 package me.whatahooda.itemreturnoncraft.models.registered;
 
+import lombok.Getter;
 import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItem;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
 public class RegisteredReturnables {
+    @Getter
     private final ArrayList<String> registeredNames = new ArrayList<>();
     private final ArrayList<ItemStack> craftItems = new ArrayList<>();
     private final ArrayList<ReturnableItem> registeredReturnableItems = new ArrayList<>();
-
-    public ArrayList<String> getRegisteredNames() {return registeredNames;}
-    public ArrayList<ItemStack> getCraftItems() {return craftItems;}
-    public ArrayList<ReturnableItem> getregisteredReturnableItems() {return registeredReturnableItems;}
 
     public void clear() {
         registeredNames.clear();
@@ -22,17 +20,17 @@ public class RegisteredReturnables {
 
     /**
      * Checks if the provided ItemStack is registered in this instance
-     * @param _craftItemToCheck ItemStack to check
-     * @param _checkNBT If set to true will search using NBT data, if false will search using Material
+     * @param craftItemToCheck ItemStack to check
+     * @param checkNBT If set to true will search using NBT data, if false will search using Material
      * @return True if the ItemStack was found, false if not
      */
-    public boolean isCraftItemRegistered(ItemStack _craftItemToCheck, boolean _checkNBT) {
-        for (ItemStack _toCompare : craftItems) {
-            if (_checkNBT) {
-                if (_craftItemToCheck.isSimilar(_toCompare)) return true;
+    public boolean isCraftItemRegistered(ItemStack craftItemToCheck, boolean checkNBT) {
+        for (ItemStack toCompare : craftItems) {
+            if (checkNBT) {
+                if (craftItemToCheck.isSimilar(toCompare)) return true;
             }
             else {
-                if (_craftItemToCheck.getType() == _toCompare.getType()) return true;
+                if (craftItemToCheck.getType() == toCompare.getType()) return true;
             }
         }
         return false;
@@ -40,24 +38,24 @@ public class RegisteredReturnables {
 
     /**
      * Adds a recipe to this instance
-     * @param _name Name of the recipe
-     * @param _craftItem The craftItem of the recipe
-     * @param _returnableItem The ReturnableItem instance that represents the recipe
+     * @param name Name of the recipe
+     * @param craftItem The craftItem of the recipe
+     * @param returnableItem The ReturnableItem instance that represents the recipe
      */
-    public void registerRecipe(String _name, ItemStack _craftItem, ReturnableItem _returnableItem) {
-        registeredNames.add(_name);
-        craftItems.add(_craftItem);
-        registeredReturnableItems.add(_returnableItem);
+    public void registerRecipe(String name, ItemStack craftItem, ReturnableItem returnableItem) {
+        registeredNames.add(name);
+        craftItems.add(craftItem);
+        registeredReturnableItems.add(returnableItem);
     }
 
     /**
      * Removes a recipe
-     * @param _recipeName The name of the recipe you want to remove
+     * @param recipeName The name of the recipe you want to remove
      * @return True if the recipe was found and removed, false if the name does not match with a recipe
      */
-    public boolean removeReturnableItem(String _recipeName) {
+    public boolean removeReturnableItem(String recipeName) {
         for (int i = 0; i < registeredNames.size(); i++) {
-            if (_recipeName.equals(registeredNames.get(i))) {
+            if (recipeName.equals(registeredNames.get(i))) {
                 registeredNames.remove(i);
                 craftItems.remove(i);
                 registeredReturnableItems.remove(i);
@@ -69,29 +67,29 @@ public class RegisteredReturnables {
 
     /**
      * Gets the ReturnableItem instance
-     * @param _recipeName Name of the recipe to retrieve
+     * @param recipeName Name of the recipe to retrieve
      * @return ReturnableItem that corresponds to the name provided, null if no recipe was found
      */
-    public ReturnableItem getReturnableItem(String _recipeName) {
+    public ReturnableItem getReturnableItem(String recipeName) {
         for (int i = 0; i < registeredNames.size(); i++) {
-            if (_recipeName.equals(registeredNames.get(i))) return registeredReturnableItems.get(i);
+            if (recipeName.equals(registeredNames.get(i))) return registeredReturnableItems.get(i);
         }
         return null;
     }
 
     /**
      * Gets the ReturnableItem instance
-     * @param _craftItem ItemStack to check for
-     * @param _checkNBT If set to true will search using NBT data, if false will search using Material
+     * @param craftItem ItemStack to check for
+     * @param checkNBT If set to true will search using NBT data, if false will search using Material
      * @return ReturnableItem that corresponds to the ItemStack provided, null if no recipe was found
      */
-    public ReturnableItem getReturnableItem(ItemStack _craftItem, boolean _checkNBT) {
+    public ReturnableItem getReturnableItem(ItemStack craftItem, boolean checkNBT) {
         for (int i = 0; i < registeredNames.size(); i++) {
-            if (_checkNBT) {
-                if (_craftItem.isSimilar(craftItems.get(i))) return registeredReturnableItems.get(i);
+            if (checkNBT) {
+                if (craftItem.isSimilar(craftItems.get(i))) return registeredReturnableItems.get(i);
             }
             else {
-                if (_craftItem.getType() == craftItems.get(i).getType()) return registeredReturnableItems.get(i);
+                if (craftItem.getType() == craftItems.get(i).getType()) return registeredReturnableItems.get(i);
             }
         }
         return null;
@@ -99,17 +97,17 @@ public class RegisteredReturnables {
 
     /**
      * Gets the ReturnableItem instance
-     * @param _craftItem ItemStack to check for
-     * @param _checkNBT If set to true will search using NBT data, if false will search using Material
+     * @param craftItem ItemStack to check for
+     * @param checkNBT If set to true will search using NBT data, if false will search using Material
      * @return String that corresponds to the ItemStack provided, null if no recipe was found
      */
-    public String getName(ItemStack _craftItem, boolean _checkNBT) {
+    public String getName(ItemStack craftItem, boolean checkNBT) {
         for (int i = 0; i < registeredNames.size(); i++) {
-            if (_checkNBT) {
-                if (_craftItem.isSimilar(craftItems.get(i))) return registeredNames.get(i);
+            if (checkNBT) {
+                if (craftItem.isSimilar(craftItems.get(i))) return registeredNames.get(i);
             }
             else {
-                if (_craftItem.getType() == craftItems.get(i).getType()) return registeredNames.get(i);
+                if (craftItem.getType() == craftItems.get(i).getType()) return registeredNames.get(i);
             }
         }
         return null;
