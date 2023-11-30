@@ -1,6 +1,7 @@
 package me.whatahooda.itemreturnoncraft.commands.tabcomplete;
 
 import me.whatahooda.itemreturnoncraft.config.ConfigManager;
+import me.whatahooda.itemreturnoncraft.models.ReturnableItemManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -14,8 +15,8 @@ public class TabCompleteGetRecipeItems implements TabCompleter {
 
         String type = _args[0];
         if (_args.length == 2) {
-            if (type.equals("general")) return ConfigManager.getManager().getRecipeNamesGeneral();
-            if (type.equals("nbt")) return ConfigManager.getManager().getRecipeNamesNBT();
+            if (type.equals("general")) return ReturnableItemManager.getManager().getNamesGeneral();
+            if (type.equals("nbt")) return ReturnableItemManager.getManager().getNamesNBT();
         }
 
         return null;

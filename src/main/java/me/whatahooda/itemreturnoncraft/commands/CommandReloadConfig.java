@@ -1,14 +1,18 @@
 package me.whatahooda.itemreturnoncraft.commands;
 
+import me.whatahooda.itemreturnoncraft.ItemReturnOnCraft;
 import me.whatahooda.itemreturnoncraft.config.ConfigManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class CommandReloadConfig implements CommandExecutor {
-    // TODO Find out how to read manually entered and saved data to the config
     @Override
-    public boolean onCommand(CommandSender _sender, Command _command, String _label, String[] _args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("craft-return.reload-config")) {
+            sender.sendMessage("");
+        }
+        ItemReturnOnCraft.getMain().reloadConfig();
         ConfigManager.getManager().loadConfig();
 
         return true;

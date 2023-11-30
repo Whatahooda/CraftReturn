@@ -2,6 +2,7 @@ package me.whatahooda.itemreturnoncraft.commands;
 
 import me.whatahooda.itemreturnoncraft.ItemReturnOnCraft;
 import me.whatahooda.itemreturnoncraft.config.ConfigManager;
+import me.whatahooda.itemreturnoncraft.models.ReturnableItemManager;
 import me.whatahooda.itemreturnoncraft.util.CraftReturnUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,20 +15,13 @@ import java.util.logging.Level;
 
 public class CommandRemoveRecipe implements CommandExecutor {
 
-    private static final ItemReturnOnCraft PLUGIN_INSTANCE;
-
-    static {
-        PLUGIN_INSTANCE = (ItemReturnOnCraft) Bukkit.getServer().getPluginManager().getPlugin("CraftReturn");
-    }
-
     @Override
     public boolean onCommand(CommandSender _sender, Command _command, String _label, String[] _args) {
-        if (!(_sender instanceof Player)) {
-            PLUGIN_INSTANCE.getLogger().log(Level.WARNING, "You must execute removeRecipe as a player entity");
+        if (!(_sender instanceof Player p)) {
+            ItemReturnOnCraft.getMain().getLogger().log(Level.WARNING, "You must execute removeRecipe as a player entity");
             return false;
         }
 
-        Player p = (Player) _sender;
         if (!passGuardCases(p, _args)) return false;
 
         String type = _args[0];
@@ -35,7 +29,7 @@ public class CommandRemoveRecipe implements CommandExecutor {
 
         ConfigManager.getManager().removeRecipeFromConfig(type, recipeName);
         p.sendMessage(CraftReturnUtil.CRAFT_RETURN_TAG + recipeName + " has been removed");
-        PLUGIN_INSTANCE.getLogger().log(Level.INFO, p.getName() + " has removed a " + type + " CraftReturn recipe named " + recipeName);
+        ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, p.getName() + " has removed a " + type + " CraftReturn recipe named " + recipeName);
         return true;
     }
 
@@ -48,11 +42,11 @@ public class CommandRemoveRecipe implements CommandExecutor {
             _p.sendMessage(CraftReturnUtil.CRAFT_RETURN_TAG + ChatColor.RED + "You must provide a recipe name");
             return false;
         }
-        if (_args[0].equals("general") && !ConfigManager.getManager().getRecipeNamesGeneral().contains(_args[1])) {
+        if (_args[0].equals("general") && !ReturnableItemManager.getManager().getNamesGeneral().contains(_args[1])) {
             _p.sendMessage(CraftReturnUtil.CRAFT_RETURN_TAG + ChatColor.RED + "You must provide a \"general\" recipe name");
             return false;
         }
-        else if (_args[0].equals("nbt") && !ConfigManager.getManager().getRecipeNamesNBT().contains(_args[1])){
+        else if (_args[0].equals("nbt") && !ReturnableItemManager.getManager().getNamesNBT().contains(_args[1])){
             _p.sendMessage(CraftReturnUtil.CRAFT_RETURN_TAG + ChatColor.RED + "You must provide a \"nbt\" recipe name");
             return false;
         }

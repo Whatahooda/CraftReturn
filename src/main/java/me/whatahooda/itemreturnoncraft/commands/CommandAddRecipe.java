@@ -16,22 +16,13 @@ import java.util.logging.Level;
 
 public class CommandAddRecipe implements CommandExecutor {
 
-    // Getting the plugin instance for variables and functions
-    // I heard dependency injections are better, but I have a hard time wrapping my head around them
-    private static final ItemReturnOnCraft PLUGIN_INSTANCE;
-
-    static {
-        PLUGIN_INSTANCE = (ItemReturnOnCraft) Bukkit.getServer().getPluginManager().getPlugin("CraftReturn");
-    }
-
     @Override
     public boolean onCommand(CommandSender _sender, Command _command, String _label, String[] _args) {
-        if (!(_sender instanceof Player)) {
-            PLUGIN_INSTANCE.getLogger().log(Level.WARNING, "You must execute addRecipe as a player entity");
+        if (!(_sender instanceof Player p)) {
+            _sender.sendMessage("You must execute addRecipe as a player entity");
             return false;
         }
 
-        Player p = (Player) _sender;
         String playerName = p.getName();
         ItemStack mainHand = p.getInventory().getItemInMainHand().clone();
         ItemStack offHand = p.getInventory().getItemInOffHand().clone();
@@ -45,8 +36,8 @@ public class CommandAddRecipe implements CommandExecutor {
 
         ConfigManager.getManager().addRecipeToConfig(recipeType, returnRecipeName, mainHand, offHand, playerName);
         p.sendMessage(CraftReturnUtil.CRAFT_RETURN_TAG + returnRecipeName + " has been added");
-        PLUGIN_INSTANCE.getLogger().log(Level.INFO, p.getName() + " has added a " + recipeType + " CraftReturn recipe named " + returnRecipeName);
-        PLUGIN_INSTANCE.getLogger().log(Level.INFO, "Craft Item: " + mainHand.getType() + " | Return Item: " + offHand.getType());
+        ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, p.getName() + " has added a " + recipeType + " CraftReturn recipe named " + returnRecipeName);
+        ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, "Craft Item: " + mainHand.getType() + " | Return Item: " + offHand.getType());
         return true;
     }
 
@@ -77,11 +68,11 @@ public class CommandAddRecipe implements CommandExecutor {
             return false;
         }
 
-        if (_args[0].equals("general") && ConfigManager.getManager().getRecipeNamesGeneral().contains(_args[1])) {
+        if (_args[0].equals("general") && ReturnableItemManager.getManager().getNamesGeneral().contains(_args[1])) {
             _p.sendMessage(CraftReturnUtil.CRAFT_RETURN_TAG + ChatColor.RED + "A general recipe already has that name");
             return false;
         }
-        else if (_args[0].equals("nbt") && ConfigManager.getManager().getRecipeNamesNBT().contains(_args[1])){
+        else if (_args[0].equals("nbt") && ReturnableItemManager.getManager().getNamesNBT().contains(_args[1])){
             _p.sendMessage(CraftReturnUtil.CRAFT_RETURN_TAG + ChatColor.RED + "A nbt recipe already has that name");
             return false;
         }

@@ -4,6 +4,7 @@ import me.whatahooda.itemreturnoncraft.models.registered.RegisteredReturnables;
 import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItem;
 import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItemGeneral;
 import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItemNBT;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
@@ -20,12 +21,10 @@ public class ReturnableItemManager {
     /**
      * The currently registered general returnable items
      */
-    //private Map<Material, ReturnableItemGeneral> registeredGeneralReturnables = new HashMap<>();
     private final RegisteredReturnables registeredGeneralReturnables = new RegisteredReturnables();
     /**
      * The currently registered NBT returnable items
      */
-    //private Map<ItemStack, ReturnableItemNBT> registeredNBTReturnables = new HashMap<>();
     private final RegisteredReturnables registeredNBTReturnables = new RegisteredReturnables();
 
     /**
@@ -144,12 +143,11 @@ public class ReturnableItemManager {
 
     private int getPlayersFreeInventory(ItemStack[] _playerContents, ItemStack _recipeResult) {
         int totalFreeSpace = 0;
-        //A semi magic number. This is the size and ending index of the standard storage indexes in a player inventory. Indexes 36+ is the armor and the offhand
+        //A semi magic number. This is the size and ending index of the standard storage indexes in a player inventory. Indexes 36+ are the armor slots and offhand slot
         int PLAYER_INVENTORY_SIZE = 36;
 
         for (int i = 0; i < PLAYER_INVENTORY_SIZE; i++) {
-            //if (_playerContents[i].getType() == Material.AIR) totalFreeSpace += _recipeResult.getMaxStackSize();
-            if (_playerContents[i] == null) totalFreeSpace += _recipeResult.getMaxStackSize();
+            if (_playerContents[i] == null || _playerContents[i].getType() == Material.AIR) totalFreeSpace += _recipeResult.getMaxStackSize();
             else if (_playerContents[i].isSimilar(_recipeResult)) totalFreeSpace += _recipeResult.getMaxStackSize() - _playerContents[i].getAmount();
         }
         return totalFreeSpace;
