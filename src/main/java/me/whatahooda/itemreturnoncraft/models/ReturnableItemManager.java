@@ -81,12 +81,12 @@ public class ReturnableItemManager {
         registeredNBTReturnables.registerRecipe(name, newCraftItem, newNBTReturnable);
     }
 
-    public boolean removeGeneralReturnable(String recipeName) {
-        return registeredGeneralReturnables.removeReturnableItem(recipeName);
+    public void removeGeneralReturnable(String recipeName) {
+        registeredGeneralReturnables.removeReturnableItem(recipeName);
     }
 
-    public boolean removeNBTReturnable(String recipeName) {
-        return registeredNBTReturnables.removeReturnableItem(recipeName);
+    public void removeNBTReturnable(String recipeName) {
+        registeredNBTReturnables.removeReturnableItem(recipeName);
     }
 
     public boolean isGeneralReturnable(ItemStack toCheck) {
@@ -144,9 +144,9 @@ public class ReturnableItemManager {
     private int getPlayersFreeInventory(ItemStack[] playerContents, ItemStack recipeResult) {
         int totalFreeSpace = 0;
         //A semi magic number. This is the size and ending index of the standard storage indexes in a player inventory. Indexes 36+ are the armor slots and offhand slot
-        int PLAYERINVENTORYSIZE = 36;
+        int playerInventorySize = 36;
 
-        for (int i = 0; i < PLAYERINVENTORYSIZE; i++) {
+        for (int i = 0; i < playerInventorySize; i++) {
             if (playerContents[i] == null || playerContents[i].getType() == Material.AIR) totalFreeSpace += recipeResult.getMaxStackSize();
             else if (playerContents[i].isSimilar(recipeResult)) totalFreeSpace += recipeResult.getMaxStackSize() - playerContents[i].getAmount();
         }

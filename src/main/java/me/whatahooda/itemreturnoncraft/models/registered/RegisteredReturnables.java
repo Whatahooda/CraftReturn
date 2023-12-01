@@ -50,19 +50,18 @@ public class RegisteredReturnables {
 
     /**
      * Removes a recipe
+     *
      * @param recipeName The name of the recipe you want to remove
-     * @return True if the recipe was found and removed, false if the name does not match with a recipe
      */
-    public boolean removeReturnableItem(String recipeName) {
+    public void removeReturnableItem(String recipeName) {
         for (int i = 0; i < registeredNames.size(); i++) {
             if (recipeName.equals(registeredNames.get(i))) {
                 registeredNames.remove(i);
                 craftItems.remove(i);
                 registeredReturnableItems.remove(i);
-                return true;
+                return;
             }
         }
-        return false;
     }
 
     /**

@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class ConfigManager {
 
-    private static ConfigManager managerInstace;
+    private static ConfigManager managerInstance;
     private static final FileConfiguration CONFIG = ItemReturnOnCraft.getMain().getConfig();
 
     public static final String CONFIG_SECTION_WORKBENCH = "returns-workbench";
@@ -24,10 +24,10 @@ public class ConfigManager {
 
 
     public static ConfigManager getManager() {
-        if (managerInstace == null) {
-            managerInstace = new ConfigManager();
+        if (managerInstance == null) {
+            managerInstance = new ConfigManager();
         }
-        return managerInstace;
+        return managerInstance;
     }
 
     public void addRecipeToConfig(String recipeType, String sectionName, ItemStack craftItem, ItemStack returnItem, String whoAdded) {
@@ -50,18 +50,18 @@ public class ConfigManager {
         ItemReturnOnCraft.getMain().saveConfig();
     }
 
-    public void removeRecipeFromConfig(String _recipeType, String _recipeName) {
+    public void removeRecipeFromConfig(String recipeType, String recipeName) {
         ConfigurationSection configSection;
-        if (_recipeType.equals("general")) {
+        if (recipeType.equals("general")) {
             configSection = CONFIG.getConfigurationSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_GENERAL);
-            ReturnableItemManager.getManager().removeGeneralReturnable(_recipeName);
+            ReturnableItemManager.getManager().removeGeneralReturnable(recipeName);
         }
         else {
             configSection = CONFIG.getConfigurationSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_NBT);
-            ReturnableItemManager.getManager().removeNBTReturnable(_recipeName);
+            ReturnableItemManager.getManager().removeNBTReturnable(recipeName);
         }
 
-        configSection.set(_recipeName, null);
+        configSection.set(recipeName, null);
         ItemReturnOnCraft.getMain().saveConfig();
     }
 
@@ -78,33 +78,31 @@ public class ConfigManager {
         ConfigurationSection sectionNBT = CONFIG.getConfigurationSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_NBT);
 
         if (sectionNBT != null) {
-            Set<String> recipeNBTKeys = sectionNBT.getKeys(false);
-            for (String recipeNBT : recipeNBTKeys) {
-                ItemStack craftItem = sectionNBT.getConfigurationSection(recipeNBT).getItemStack(CONFIG_SECTION_CRAFT_ITEM);
-                ItemStack returnItem = sectionNBT.getConfigurationSection(recipeNBT).getItemStack(CONFIG_SECTION_RETURN_ITEM);
-                if (craftItem == null || returnItem == null) {
-                    ItemReturnOnCraft.getMain().getLogger().log(Level.WARNING, "Couldn't load NBT recipe: " + recipeNBT);
-                } else {
-                    ReturnableItemManager.getManager().registerNBTReturnable(recipeNBT, craftItem, returnItem);
-                    recipeCount++;
-                }
-            }
+            recipeCount = registerRecipes(sectionNBT, "nbt");
+        }
+        if (sectionGeneral != null) {
+            recipeCount = registerRecipes(sectionGeneral, "general");
         }
 
-        if (sectionGeneral != null) {
-            Set<String> recipeGeneralKeys = sectionGeneral.getKeys(false);
-            for (String recipeGeneral : recipeGeneralKeys) {
-                ItemStack craftItem = sectionGeneral.getConfigurationSection(recipeGeneral).getItemStack(CONFIG_SECTION_CRAFT_ITEM);
-                ItemStack returnItem = sectionGeneral.getConfigurationSection(recipeGeneral).getItemStack(CONFIG_SECTION_RETURN_ITEM);
-                if (craftItem == null || returnItem == null) {
-                    ItemReturnOnCraft.getMain().getLogger().log(Level.WARNING, "Couldn't load general recipe: " + recipeGeneral);
-                } else {
-                    ReturnableItemManager.getManager().registerGeneralReturnable(recipeGeneral, craftItem, returnItem);
-                    recipeCount++;
-                }
-            }
-        }
         if (recipeCount == 0) ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, "No recipes found");
         else ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, "Loaded " + recipeCount + " recipes");
+    }
+
+    private int registerRecipes(ConfigurationSection section, String type) {
+        int recipeCount = 0;
+        Set<String> recipeKeys = section.getKeys(false);
+        for (String recipe : recipeKeys) {
+            ItemStack craftItem = section.getConfigurationSection(recipe).getItemStack(CONFIG_SECTION_CRAFT_ITEM);
+            ItemStack returnItem = section.getConfigurationSection(recipe).getItemStack(CONFIG_SECTION_RETURN_ITEM);
+            if (craftItem == null || returnItem == null) {
+                ItemReturnOnCraft.getMain().getLogger().log(Level.WARNING, "Couldn't load recipe: " + recipe);
+            } else {
+                if (type.equals("general")) ReturnableItemManager.getManager().registerGeneralReturnable(recipe, craftItem, returnItem);
+                else if (type.equals("nbt")) ReturnableItemManager.getManager().registerNBTReturnable(recipe, craftItem, returnItem);
+                recipeCount++;
+            }
+        }
+        return recipeCount;
+
     }
 }
