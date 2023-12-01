@@ -1,7 +1,9 @@
 package me.whatahooda.itemreturnoncraft;
 
+import lombok.Getter;
 import me.whatahooda.itemreturnoncraft.commands.CommandAddRecipe;
 import me.whatahooda.itemreturnoncraft.commands.CommandGetRecipeItems;
+import me.whatahooda.itemreturnoncraft.commands.CommandReloadConfig;
 import me.whatahooda.itemreturnoncraft.commands.CommandRemoveRecipe;
 import me.whatahooda.itemreturnoncraft.commands.tabcomplete.TabCompleteAddRecipe;
 import me.whatahooda.itemreturnoncraft.commands.tabcomplete.TabCompleteGetRecipeItems;
@@ -12,8 +14,14 @@ import me.whatahooda.itemreturnoncraft.config.ConfigManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ItemReturnOnCraft extends JavaPlugin {
+
+    @Getter
+    private static ItemReturnOnCraft main;
+
     @Override
     public void onEnable() {
+        main = this;
+
         saveDefaultConfig();
         ConfigManager.getManager().configStartUp();
 
@@ -38,7 +46,6 @@ public final class ItemReturnOnCraft extends JavaPlugin {
         getCommand("getRecipe").setExecutor(new CommandGetRecipeItems());
         getCommand("getRecipe").setTabCompleter(new TabCompleteGetRecipeItems());
 
-        // Doesn't load manually entered data, I gotta figure out how to do that -Whatahooda
-        //getCommand("reloadConfig").setExecutor(new CommandReloadConfig());
+        getCommand("reloadConfig").setExecutor(new CommandReloadConfig());
     }
 }

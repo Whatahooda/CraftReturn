@@ -1,23 +1,30 @@
 package me.whatahooda.itemreturnoncraft.commands.tabcomplete;
 
 import me.whatahooda.itemreturnoncraft.config.ConfigManager;
+import me.whatahooda.itemreturnoncraft.models.ReturnableItemManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TabCompleteRemoveRecipe implements TabCompleter {
     @Override
-    public List<String> onTabComplete(CommandSender _sender, Command _command, String _label, String[] _args) {
-        if (_args.length == 1) return ConfigManager.SUB_COMMANDS_RECIPE_TYPE;
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (args.length == 1) return ConfigManager.SUB_COMMANDS_RECIPE_TYPE;
 
-        String type = _args[0];
-        if (_args.length == 2) {
-            if (type.equals("general")) return ConfigManager.getManager().getRecipeNamesGeneral();
-            if (type.equals("nbt")) return ConfigManager.getManager().getRecipeNamesNBT();
+        String type = args[0];
+        if (args.length == 2) {
+            if (type.equals("general")) return ReturnableItemManager.getManager().getNamesGeneral().stream()
+                    .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
+                    .toList();
+            if (type.equals("nbt")) return ReturnableItemManager.getManager().getNamesNBT().stream()
+                    .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
+                    .toList();
         }
 
-        return null;
+        return new ArrayList<>();
     }
 }
