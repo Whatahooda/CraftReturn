@@ -25,19 +25,19 @@ commands:
     permission: craft-return.commands.reload-config
 
 permissions:
-  commands:
-    craft-return.add-recipe:
+  craft-return.commands:
+    add-recipe:
       description: Allows addRecipe command
-      default: false
+      default: true
 
-    craft-return.remove-recipe:
+    remove-recipe:
       description: Allows removeRecipe command
-      default: false
+      default: true
 
-    craft-return.get-recipe:
+    get-recipe:
       description: Allows getRecipe command
-      default: false
+      default: true
 
-    craft-return.reload-config:
+    reload-config:
       description: Allows reloadConfig command
-      default: false
+      default: true
