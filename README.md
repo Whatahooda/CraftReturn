@@ -25,4 +25,3 @@ Add the items involved in a recipe to your main-hand(craft-item) and off-hand(re
 `/reloadConfig`  
 **Permission node**: craft-return.commands.reload-config  
 Loads and reads the locally stored config file  
-Note: The loaded recipe count displayed on the command line may be innacurate, but all valid recipes will be properly loaded  
