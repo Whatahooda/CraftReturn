@@ -1,6 +1,6 @@
 #     ----- CraftReturn Config -----
-#
-#
+# This is where recipes are stored.
+# Each recipe has a addedBy tag to document who added the recipe with in game commands
 
 # Don't change these configs unless you know what you're doing
 # Instead use the /addRecipe command while holding an item in your main-hand and off-hand.
