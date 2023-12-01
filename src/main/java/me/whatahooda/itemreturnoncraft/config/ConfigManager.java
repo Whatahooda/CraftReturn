@@ -78,10 +78,10 @@ public class ConfigManager {
         ConfigurationSection sectionNBT = CONFIG.getConfigurationSection(CONFIG_SECTION_WORKBENCH + "." + CONFIG_SECTION_NBT);
 
         if (sectionNBT != null) {
-            recipeCount = registerRecipes(sectionNBT, "nbt");
+            recipeCount += registerRecipes(sectionNBT, "nbt");
         }
         if (sectionGeneral != null) {
-            recipeCount = registerRecipes(sectionGeneral, "general");
+            recipeCount += registerRecipes(sectionGeneral, "general");
         }
 
         if (recipeCount == 0) ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, "No recipes found");
