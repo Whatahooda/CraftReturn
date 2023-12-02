@@ -1,7 +1,7 @@
-package me.whatahooda.itemreturnoncraft.config;
+package me.whatahooda.craftreturn.config;
 
-import me.whatahooda.itemreturnoncraft.ItemReturnOnCraft;
-import me.whatahooda.itemreturnoncraft.models.ReturnableItemManager;
+import me.whatahooda.craftreturn.CraftReturn;
+import me.whatahooda.craftreturn.models.ReturnableItemManager;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +12,7 @@ import java.util.logging.Level;
 public class ConfigManager {
 
     private static ConfigManager managerInstance;
-    private static final FileConfiguration CONFIG = ItemReturnOnCraft.getMain().getConfig();
+    private static final FileConfiguration CONFIG = CraftReturn.getMain().getConfig();
 
     public static final String CONFIG_SECTION_WORKBENCH = "returns-workbench";
     public static final String CONFIG_SECTION_GENERAL = "general";
@@ -47,7 +47,7 @@ public class ConfigManager {
         }
 
         configSection.createSection(sectionName, pathValueMap).set("addedBy", whoAdded);
-        ItemReturnOnCraft.getMain().saveConfig();
+        CraftReturn.getMain().saveConfig();
     }
 
     public void removeRecipeFromConfig(String recipeType, String recipeName) {
@@ -62,7 +62,7 @@ public class ConfigManager {
         }
 
         configSection.set(recipeName, null);
-        ItemReturnOnCraft.getMain().saveConfig();
+        CraftReturn.getMain().saveConfig();
     }
 
 
@@ -84,8 +84,8 @@ public class ConfigManager {
             recipeCount += registerRecipes(sectionGeneral, "general");
         }
 
-        if (recipeCount == 0) ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, "No recipes found");
-        else ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, "Loaded " + recipeCount + " recipes");
+        if (recipeCount == 0) CraftReturn.getMain().getLogger().log(Level.INFO, "No recipes found");
+        else CraftReturn.getMain().getLogger().log(Level.INFO, "Loaded " + recipeCount + " recipes");
     }
 
     private int registerRecipes(ConfigurationSection section, String type) {
@@ -95,7 +95,7 @@ public class ConfigManager {
             ItemStack craftItem = section.getConfigurationSection(recipe).getItemStack(CONFIG_SECTION_CRAFT_ITEM);
             ItemStack returnItem = section.getConfigurationSection(recipe).getItemStack(CONFIG_SECTION_RETURN_ITEM);
             if (craftItem == null || returnItem == null) {
-                ItemReturnOnCraft.getMain().getLogger().log(Level.WARNING, "Couldn't load recipe: " + recipe);
+                CraftReturn.getMain().getLogger().log(Level.WARNING, "Couldn't load recipe: " + recipe);
             } else {
                 if (type.equals("general")) ReturnableItemManager.getManager().registerGeneralReturnable(recipe, craftItem, returnItem);
                 else if (type.equals("nbt")) ReturnableItemManager.getManager().registerNBTReturnable(recipe, craftItem, returnItem);

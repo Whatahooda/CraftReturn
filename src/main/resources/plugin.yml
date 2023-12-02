@@ -1,43 +1,39 @@
 name: CraftReturn
 version: '${project.version}'
-main: me.whatahooda.itemreturnoncraft.ItemReturnOnCraft
+main: me.whatahooda.craftreturn.CraftReturn
 api-version: '1.20'
 
 commands:
   addRecipe:
     description: Adds a new item that is returned on craft. Uses the items in your main-hand(craft-item) and off-hand(return-item)
     usage: /addRecipe recipeType recipeName
-    permission: craft-return.commands.add-recipe
+    permission: craftreturn.command.addrecipe
 
   removeRecipe:
     description: Removes the specified recipe from the config
     usage: /removeRecipe recipeType recipeName confirm
-    permission: craft-return.commands.remove-recipe
+    permission: craftreturn.command.removerecipe
 
   getRecipe:
     description: Add the items involved in a recipe to your main-hand(craft-item) and off-hand(return-item), this will replace those slots
     usage: /getRecipe recipeType recipeName confirm
-    permission: craft-return.commands.get-recipe
+    permission: craftreturn.command.getrecipe
 
   reloadConfig:
     description: Reloads the CraftReturn config
     usage: /reloadConfig
-    permission: craft-return.commands.reload-config
+    permission: craftreturn.command.reloadconfig
 
 permissions:
-  craft-return.commands:
-    add-recipe:
-      description: Allows addRecipe command
-      default: true
-
-    remove-recipe:
-      description: Allows removeRecipe command
-      default: true
-
-    get-recipe:
-      description: Allows getRecipe command
-      default: true
-
-    reload-config:
-      description: Allows reloadConfig command
-      default: true
+  craftreturn.command.addrecipe:
+    description: Allows the user to add a recipe
+    default: op
+  craftreturn.command.removerecipe:
+    description: Allows the user to remove a recipe
+    default: op
+  craftreturn.command.getrecipe:
+    description: Allows the user to get a recipe
+    default: op
+  craftreturn.command.reloadconfig:
+    description: Allows the user to reload the config
+    default: op

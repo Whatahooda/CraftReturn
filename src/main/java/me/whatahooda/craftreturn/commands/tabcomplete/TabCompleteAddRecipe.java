@@ -1,6 +1,6 @@
-package me.whatahooda.itemreturnoncraft.commands.tabcomplete;
+package me.whatahooda.craftreturn.commands.tabcomplete;
 
-import me.whatahooda.itemreturnoncraft.config.ConfigManager;
+import me.whatahooda.craftreturn.config.ConfigManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

@@ -1,4 +1,4 @@
-package me.whatahooda.itemreturnoncraft.util;
+package me.whatahooda.craftreturn.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

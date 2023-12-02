@@ -1,7 +1,7 @@
-package me.whatahooda.itemreturnoncraft.models.registered;
+package me.whatahooda.craftreturn.models.registered;
 
 import lombok.Getter;
-import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItem;
+import me.whatahooda.craftreturn.models.returnables.ReturnableItem;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;

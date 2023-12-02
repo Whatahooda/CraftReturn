@@ -1,10 +1,9 @@
-package me.whatahooda.itemreturnoncraft.commands;
+package me.whatahooda.craftreturn.commands;
 
-import me.whatahooda.itemreturnoncraft.ItemReturnOnCraft;
-import me.whatahooda.itemreturnoncraft.config.ConfigManager;
-import me.whatahooda.itemreturnoncraft.models.ReturnableItemManager;
-import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItem;
-import me.whatahooda.itemreturnoncraft.util.CraftReturnUtil;
+import me.whatahooda.craftreturn.CraftReturn;
+import me.whatahooda.craftreturn.config.ConfigManager;
+import me.whatahooda.craftreturn.models.ReturnableItemManager;
+import me.whatahooda.craftreturn.util.CraftReturnUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,16 +12,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
 
-public class CommandGetRecipeItems implements CommandExecutor {
+public class CommandRemoveRecipe implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!sender.hasPermission("craft-return.commands.get-recipe")) {
+        if (!sender.hasPermission("craftreturn.command.removerecipe")) {
             sender.sendMessage(CraftReturnUtil.COMMAND_NO_PERMISSION);
             return true;
         }
         if (!(sender instanceof Player p)) {
-            ItemReturnOnCraft.getMain().getLogger().log(Level.WARNING, "You must execute getRecipe as a player entity");
+            CraftReturn.getMain().getLogger().log(Level.WARNING, "You must execute removeRecipe as a player entity");
             return false;
         }
 
@@ -31,17 +30,9 @@ public class CommandGetRecipeItems implements CommandExecutor {
         String type = args[0];
         String recipeName = args[1];
 
-        if (type.equals("general")) {
-            ReturnableItem recipe = ReturnableItemManager.getManager().getGeneralRecipe(recipeName);
-            p.getInventory().setItemInMainHand(recipe.getCraftItem());
-            p.getInventory().setItemInOffHand(recipe.getReturnItem());
-        }
-        else if (type.equals("nbt")) {
-            ReturnableItem recipe = ReturnableItemManager.getManager().getNBTRecipe(recipeName);
-            p.getInventory().setItemInMainHand(recipe.getCraftItem());
-            p.getInventory().setItemInOffHand(recipe.getReturnItem());
-        }
-
+        ConfigManager.getManager().removeRecipeFromConfig(type, recipeName);
+        p.sendMessage(CraftReturnUtil.messageInfo(recipeName + " has been removed"));
+        CraftReturn.getMain().getLogger().log(Level.INFO, p.getName() + " has removed a " + type + " CraftReturn recipe named " + recipeName);
         return true;
     }
 
@@ -64,7 +55,7 @@ public class CommandGetRecipeItems implements CommandExecutor {
         }
 
         if (args.length < 3 || !args[2].equals("confirm")) {
-            p.sendMessage(CraftReturnUtil.messageError("This will REPLACE the items in your main and off hand, please confirm"));
+            p.sendMessage(CraftReturnUtil.messageError("Please confirm you want to remove this recipe"));
             return false;
         }
 

@@ -1,4 +1,4 @@
-package me.whatahooda.itemreturnoncraft.models.returnables;
+package me.whatahooda.craftreturn.models.returnables;
 
 import org.bukkit.inventory.ItemStack;
 

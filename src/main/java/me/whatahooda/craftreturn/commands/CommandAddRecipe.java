@@ -1,9 +1,9 @@
-package me.whatahooda.itemreturnoncraft.commands;
+package me.whatahooda.craftreturn.commands;
 
-import me.whatahooda.itemreturnoncraft.ItemReturnOnCraft;
-import me.whatahooda.itemreturnoncraft.config.ConfigManager;
-import me.whatahooda.itemreturnoncraft.models.ReturnableItemManager;
-import me.whatahooda.itemreturnoncraft.util.CraftReturnUtil;
+import me.whatahooda.craftreturn.CraftReturn;
+import me.whatahooda.craftreturn.config.ConfigManager;
+import me.whatahooda.craftreturn.models.ReturnableItemManager;
+import me.whatahooda.craftreturn.util.CraftReturnUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +17,7 @@ public class CommandAddRecipe implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!sender.hasPermission("craft-return.commands.add-recipe")) {
+        if (!sender.hasPermission("craftreturn.command.addrecipe")) {
             sender.sendMessage(CraftReturnUtil.COMMAND_NO_PERMISSION);
             return true;
         }
@@ -39,8 +39,8 @@ public class CommandAddRecipe implements CommandExecutor {
 
         ConfigManager.getManager().addRecipeToConfig(recipeType, returnRecipeName, mainHand, offHand, playerName);
         p.sendMessage(CraftReturnUtil.messageInfo(returnRecipeName + " has been added"));
-        ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, p.getName() + " has added a " + recipeType + " CraftReturn recipe named " + returnRecipeName);
-        ItemReturnOnCraft.getMain().getLogger().log(Level.INFO, "Craft Item: " + mainHand.getType() + " | Return Item: " + offHand.getType());
+        CraftReturn.getMain().getLogger().log(Level.INFO, p.getName() + " has added a " + recipeType + " CraftReturn recipe named " + returnRecipeName);
+        CraftReturn.getMain().getLogger().log(Level.INFO, "Craft Item: " + mainHand.getType() + " | Return Item: " + offHand.getType());
         return true;
     }
 

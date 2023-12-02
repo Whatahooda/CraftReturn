@@ -1,9 +1,9 @@
-package me.whatahooda.itemreturnoncraft.models;
+package me.whatahooda.craftreturn.models;
 
-import me.whatahooda.itemreturnoncraft.models.registered.RegisteredReturnables;
-import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItem;
-import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItemGeneral;
-import me.whatahooda.itemreturnoncraft.models.returnables.ReturnableItemNBT;
+import me.whatahooda.craftreturn.models.registered.RegisteredReturnables;
+import me.whatahooda.craftreturn.models.returnables.ReturnableItem;
+import me.whatahooda.craftreturn.models.returnables.ReturnableItemGeneral;
+import me.whatahooda.craftreturn.models.returnables.ReturnableItemNBT;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.CraftingInventory;

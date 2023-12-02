@@ -1,6 +1,6 @@
-package me.whatahooda.itemreturnoncraft.listeners;
+package me.whatahooda.craftreturn.listeners;
 
-import me.whatahooda.itemreturnoncraft.models.ReturnableItemManager;
+import me.whatahooda.craftreturn.models.ReturnableItemManager;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
